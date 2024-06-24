@@ -1,0 +1,49 @@
+{
+    "BobMarleyAlbums": [
+        {
+            "title": "Catch a Fire",
+            "releaseYear": 1973,
+            "label": "Island Records"
+        },
+        {
+            "title": "Burnin'",
+            "releaseYear": 1973,
+            "label": "Island Records"
+        },
+        {
+            "title": "Natty Dread",
+            "releaseYear": 1974,
+            "label": "Island Records"
+        },
+        {
+            "title": "Rastaman Vibration",
+            "releaseYear": 1976,
+            "label": "Island Records"
+        },
+        {
+            "title": "Exodus",
+            "releaseYear": 1977,
+            "label": "Island Records"
+        },
+        {
+            "title": "Kaya",
+            "releaseYear": 1978,
+            "label": "Island Records"
+        },
+        {
+            "title": "Survival",
+            "releaseYear": 1979,
+            "label": "Island Records"
+        },
+        {
+            "title": "Uprising",
+            "releaseYear": 1980,
+            "label": "Island Records"
+        },
+        {
+            "title": "Confrontation",
+            "releaseYear": 1983,
+            "label": "Island Records"
+        }
+    ]
+}
