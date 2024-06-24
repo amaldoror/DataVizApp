@@ -1,16 +1,19 @@
-import streamlit as st
 import pandas as pd
-import numpy as np
 import pypdf
-import json
+import streamlit as st
+from streamlit_multipage import MultiPage
+
 from MachineLearning import (preprocess_data,
-                             plot_sample_images,
                              train_lr,
                              train_dt,
                              train_rf,
                              train_svm,
                              train_snn,
                              print_model_info)
+
+st.set_page_config(page_title="DataVizApp", layout="wide")
+#st.sidebar.success("Select a demo above.")
+
 
 # ------------------------- Header -------------------------
 header = {
