@@ -1,9 +1,6 @@
 import streamlit as st
 
 
-st.set_page_config(page_title="DataVizApp", layout="wide")
-
-
 def page1():
     st.title("Chat")
 

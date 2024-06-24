@@ -12,7 +12,21 @@ from MachineLearning import (preprocess_data,
                              print_model_info)
 
 st.set_page_config(page_title="DataVizApp", layout="wide")
-#st.sidebar.success("Select a demo above.")
+
+
+page1 = st.Page("pages/page1.py", title="Chat", icon=":material/chat:")
+page2 = st.Page("pages/page2.py", title="LaTeX", icon=":material/functions:")
+page3 = st.Page("pages/page3.py", title="About", icon=":material/info:")
+
+pg = st.navigation([page1, page2, page3])
+
+st.sidebar.header("Info")
+st.sidebar.write("Lorem ipsum dolor sit amet")
+
+# Render current page content
+pg.run()
+
+
 
 
 # ------------------------- Header -------------------------
@@ -23,6 +37,22 @@ header = {
     st.divider()
 }
 
+# ------------------------ Login ----------------------------
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login():
+    if st.button("Log in"):
+        st.session_state.logged_in = True
+        st.rerun()
+
+
+def logout():
+    if st.button("Log out"):
+        st.session_state.logged_in = False
+        st.rerun()
 
 # ---------------------- File Uploader ----------------------
 def read_file(file):
@@ -165,11 +195,4 @@ if uploaded_file is not None and isinstance(df, pd.DataFrame):
 x = st.slider("Select a value")
 st.write(f"Selected value: {x}")
 
-# LaTeX Button
-if st.button('LaTeX'):
-    st.latex(r'''
-        a + ax + a x^2 + a x^3 + \cdots + a x^{n-1} =
-        \sum_{k=0}^{n-1} ax^k =
-        a \left(\frac{1-x^{n}}{1-x}\right)
-        ''')
 
