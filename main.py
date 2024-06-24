@@ -19,62 +19,36 @@ st.header(':blue[Header]')
 st.subheader(':blue[Subheader]')
 st.divider()
 
-# ------------------------- Data -------------------------
-
-df = pd.DataFrame(
-        {
-           "x-Achse": np.random.randn(20),
-           "y-Achse": np.random.randn(20),
-           "Legende": np.random.choice(["A", "B", "C"], 20),
-        }
-    )
-st.line_chart(df, x="x-Achse", y="y-Achse", color="Legende")
-
-st.divider()
-
-# Line chart
-st.write("Line Chart:")
-st.line_chart(df)
-
-# Slider
-st.write("Slider:")
-x = st.slider("Select a value")
-st.write(f"Selected value: {x}")
-
-# Selectbox
-st.write("Selectbox:")
-option = st.selectbox(
-    'Select:',
-    df.columns
-)
-st.write(f'You selected: {option}')
-
-# Button
-st.write("Button:")
-if st.button('Button'):
-    st.write('Hello, Streamlit!')
-
-
 # ---------------------- File Uploader ----------------------
+
 
 def read_file(file):
     file_type = file.type
-    match file_type:
-        case 'text/csv':
-            return pd.read_csv(file)
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+    file_name = file.name
+
+    # Debugging information
+    st.write(f"Detected file type: {file_type}")
+    st.write(f"File name: {file_name}")
+
+    try:
+        # Check if file is CSV based on MIME type or file extension
+        if file_type == 'text/csv' or file_name.endswith('.csv'):
+            return pd.read_csv(file, encoding='utf-8')
+        elif file_type == 'application/vnd.ms-excel' or file_name.endswith('.xls') or file_name.endswith('.xlsx'):
             return pd.read_excel(file)
-        case 'application/json':
-            return pd.read_json(file)
-        case 'application/pdf':
+        elif file_type == 'application/json' or file_name.endswith('.json'):
+            return pd.read_json(file, encoding='utf-8')
+        elif file_type == 'application/pdf' or file_name.endswith('.pdf'):
             reader = pypdf.PdfReader(file)
             text = ""
             for page in reader.pages:
                 text += page.extract_text()
-            return text
-        case default:
+            return text.encode('utf-8', errors='ignore').decode('utf-8')
+        else:
             return None
-
+    except UnicodeDecodeError:
+        st.error("There was an error decoding the file. Please ensure the file is in UTF-8 format.")
+        return None
 
 # File uploader
 uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx', 'xls', 'json', 'pdf'])
@@ -104,6 +78,38 @@ if uploaded_file is not None:
         st.write(data)
     else:
         st.error("Unsupported file format")
+
+# ------------------------- Data -------------------------
+
+df = pd.DataFrame(
+        {
+           "x-Achse": np.random.randn(20),
+           "y-Achse": np.random.randn(20),
+           "Legende": np.random.choice(["A", "B", "C"], 20),
+        }
+    )
+st.line_chart(df, x="x-Achse", y="y-Achse", color="Legende")
+
+st.divider()
+
+# Slider
+st.write("Slider:")
+x = st.slider("Select a value")
+st.write(f"Selected value: {x}")
+
+# Selectbox
+st.write("Selectbox:")
+option = st.selectbox(
+    'Select:',
+    df.columns
+)
+st.write(f'You selected: {option}')
+
+# Button
+st.write("Button:")
+if st.button('Button'):
+    st.write('Button clicked')
+
 
 # ------------------------- Tasks -------------------------
 
