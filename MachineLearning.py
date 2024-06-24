@@ -263,10 +263,7 @@ def train_snn(x_train_scaled, x_test_scaled, y_train, y_test):
     # Beende die Zeitmessung und berechne die Dauer
     training_time_nn = time() - start_time_nn
 
-    y_pred_nn = model.predict(x_test_scaled)
-
-    # ValueError: Classification metrics can't handle a mix of multiclass and continuous-multioutput targets
-    # accuracy_nn = accuracy_score(y_test, y_pred_nn)
+    # y_pred_nn = model.predict(x_test_scaled)
 
     loss, accuracy_nn = model.evaluate(x_test_scaled, tf.keras.utils.to_categorical(y_test, num_classes=num_classes))
 
@@ -277,6 +274,7 @@ def print_model_info(model, training_time, accuracy, additional_info=""):
     print(f"""
     Modellinformationen:
     ----------------------------------------------------------------------------------
+    Model:                      {model}
     Training Time:              {training_time}
     Accuracy:                   {accuracy:.4f}
     {additional_info}
