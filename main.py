@@ -13,15 +13,15 @@ from MachineLearning import (preprocess_data,
                              print_model_info)
 
 # ------------------------- Header -------------------------
+header = {
+    st.title(':blue[amaldoror Data Visualization App]'),
+    st.header(':blue[Header]'),
+    st.subheader(':blue[Subheader]'),
+    st.divider()
+}
 
-st.title(':blue[amaldoror Data Visualization App]')
-st.header(':blue[Header]')
-st.subheader(':blue[Subheader]')
-st.divider()
 
 # ---------------------- File Uploader ----------------------
-
-
 def read_file(file):
     file_type = file.type
     file_name = file.name
@@ -34,8 +34,11 @@ def read_file(file):
         # Check if file is CSV based on MIME type or file extension
         if file_type == 'text/csv' or file_name.endswith('.csv'):
             return pd.read_csv(file, encoding='utf-8')
-        elif file_type == 'application/vnd.ms-excel' or file_name.endswith('.xls') or file_name.endswith('.xlsx'):
-            return pd.read_excel(file)
+        elif file_type == 'application/vnd.ms-excel' or file_name.endswith('.xls'):
+            return pd.read_excel(file, engine='xlrd')
+        elif (file_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              or file_name.endswith('.xlsx')):
+            return pd.read_excel(file, engine='openpyxl')
         elif file_type == 'application/json' or file_name.endswith('.json'):
             return pd.read_json(file, encoding='utf-8')
         elif file_type == 'application/pdf' or file_name.endswith('.pdf'):
@@ -50,87 +53,122 @@ def read_file(file):
         st.error("There was an error decoding the file. Please ensure the file is in UTF-8 format.")
         return None
 
+
 # File uploader
 uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx', 'xls', 'json', 'pdf'])
+
+
+def show_basic_stats(data):
+    # Show basic statistics
+    st.write("Basic Statistics")
+    st.write(data.describe())
+
+
+def select_features(columns):
+    st.write("Select features for plotting")
+    features = st.multiselect('Choose features for plotting', columns)
+    return features
+
+
+def plot_features(features):
+    st.write("Data Visualization")
+    chart_type = st.selectbox(
+        'Choose a chart type',
+    )
+    if chart_type == 'Line Chart':
+        st.line_chart(df)
+    elif chart_type == 'Bar Chart':
+        st.bar_chart(df)
+    elif chart_type == 'Area Chart':
+        st.area_chart(df)
+    elif chart_type == 'Histogram':
+        # TODO: Implement Histogram
+        st.error('Histogram not supported yet')
+    elif chart_type == 'Scatterplot':
+        # TODO: Implement Scatterplot
+        st.error('Scatterplot not supported yet')
+
+
+def select_columns():
+    # Select columns for plotting
+    st.write("Select columns for plotting")
+    columns = df.columns.tolist()
+    x_column = st.selectbox('Choose a column for the x-axis:', columns)
+    y_column = st.selectbox('Choose a column for the y-axis:', columns)
+    return x_column, y_column
+
+
+def plot_data(df, x_column, y_column):
+    st.write("Data Visualization")
+    chart_type = st.selectbox('Choose a chart type', ['Line Chart', 'Bar Chart', 'Area Chart'])
+    if chart_type == 'Line Chart':
+        st.line_chart(df[[x_column, y_column]].set_index(x_column))
+    elif chart_type == 'Bar Chart':
+        st.bar_chart(df[[x_column, y_column]].set_index(x_column))
+    elif chart_type == 'Area Chart':
+        st.area_chart(df[[x_column, y_column]].set_index(x_column))
+
+
 if uploaded_file is not None:
-    data = read_file(uploaded_file)
-    if isinstance(data, pd.DataFrame):
-        st.write(data)
-
-        # Show basic statistics
-        st.write("Basic Statistics")
-        st.write(data.describe())
-
-        # Plotting
-        st.write("Data Visualization")
-        chart_type = st.selectbox(
-            'Choose a chart type',
-            ['Line Chart', 'Bar Chart', 'Area Chart']
-        )
-
-        if chart_type == 'Line Chart':
-            st.line_chart(data)
-        elif chart_type == 'Bar Chart':
-            st.bar_chart(data)
-        elif chart_type == 'Area Chart':
-            st.area_chart(data)
-    elif isinstance(data, str):
-        st.write(data)
+    df = read_file(uploaded_file)
+    if isinstance(df, pd.DataFrame):
+        st.write(df)
+        show_basic_stats(df)
+        x_column, y_column = select_columns()
+        plot_data(df, x_column, y_column)
+    elif isinstance(df, str):
+        st.write(df)
     else:
         st.error("Unsupported file format")
 
-# ------------------------- Data -------------------------
 
-df = pd.DataFrame(
-        {
-           "x-Achse": np.random.randn(20),
-           "y-Achse": np.random.randn(20),
-           "Legende": np.random.choice(["A", "B", "C"], 20),
-        }
+def select_model():
+    st.write("Select model for plotting")
+    model_choice = st.selectbox(
+        'Choose a model',
+        ['Logistic Regression', 'Decision Tree', 'Random Forest', 'SVM', 'Neural Net']
     )
-st.line_chart(df, x="x-Achse", y="y-Achse", color="Legende")
+    return model_choice
 
-st.divider()
+
+def train_model(model_choice, df):
+    x = df.drop(columns=df.columns[-1])
+    y = df[df.columns[-1]]
+    x_train, x_test, y_train, y_test = preprocess_data(x, y)
+    match model_choice:
+        case 'Logistic Regression':
+            model = train_lr(x_train, x_test, y_train, y_test)
+        case 'Decision Tree':
+            model = train_dt(x_train, x_test, y_train, y_test)
+        case 'Random Forest':
+            model = train_rf(x_train, x_test, y_train, y_test)
+        case 'SVM':
+            model = train_svm(x_train, x_test, y_train, y_test)
+        case 'Neural Net':
+            model = train_snn(x_train, x_test, y_train, y_test)
+        case _:
+            st.error("Model not supported")
+            return None
+    print_model_info(model, x_test, y_test)
+    return model
+
+
+model_choice = select_model()
+if uploaded_file is not None and isinstance(df, pd.DataFrame):
+    model = train_model(model_choice, df)
+
 
 # Slider
-st.write("Slider:")
 x = st.slider("Select a value")
 st.write(f"Selected value: {x}")
 
-# Selectbox
-st.write("Selectbox:")
-option = st.selectbox(
-    'Select:',
-    df.columns
-)
-st.write(f'You selected: {option}')
-
-# Button
-st.write("Button:")
-if st.button('Button'):
-    st.write('Button clicked')
-
-
-# ------------------------- Tasks -------------------------
-
-st.markdown('''
-- [x] Task 1
-- [ ] Task 2
-- [ ] Task 3
-    ''')
-st.divider()
-
-# ------------------------- LaTeX -------------------------
-
-st.latex(r'''
-    a + ax + a x^2 + a x^3 + \cdots + a x^{n-1} =
-    \sum_{k=0}^{n-1} ax^k =
-    a \left(\frac{1-x^{n}}{1-x}\right)
-    ''')
-
-st.divider()
-
-# ------------------------- Chat -------------------------
+# LaTeX Button
+if st.button('LaTeX'):
+    st.latex(r'''
+        a + ax + a x^2 + a x^3 + \cdots + a x^{n-1} =
+        \sum_{k=0}^{n-1} ax^k =
+        a \left(\frac{1-x^{n}}{1-x}\right)
+        ''')
 
 # Initialize chat history
 if "messages" not in st.session_state:
