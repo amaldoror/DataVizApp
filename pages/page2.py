@@ -1,10 +1,6 @@
 import streamlit as st
 
 
-def page2():
-    st.title("LaTeX")
-
-
 show_latex = st.checkbox("Show LaTeX")
 # LaTeX Button
 if show_latex:

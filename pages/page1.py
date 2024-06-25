@@ -1,10 +1,6 @@
 import streamlit as st
 
 
-def page1():
-    st.title("Chat")
-
-
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []

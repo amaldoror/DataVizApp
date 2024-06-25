@@ -13,6 +13,4 @@ header = {
     st.divider()
 }
 
-# Slider
-x = st.slider("Select a value")
-st.write(f"Selected value: {x}")
+
