@@ -21,7 +21,7 @@ newsletter = (
     "https://raw.githubusercontent.com/amaldoror/DataVizApp/master/img/letter.gif"
 )
 
-uptime = "https://uptime.betterstack.com/status-badges/v1/monitor/196o6.svg"
+uptime = "https://uptime.betterstack.com/status-badges/v3/monitor/1etbk.svg"
 
 st.sidebar.caption(
     f"""
@@ -35,7 +35,7 @@ st.sidebar.caption(
 
         </div>
         <br>
-        <a href = 'https://exifa.betteruptime.com/'><img src='{uptime}'></a>
+        <a href = 'https://uptime.betterstack.com/?utm_source=status_badge/'><img src='{uptime}'></a>
 
         """,
     unsafe_allow_html=True,
