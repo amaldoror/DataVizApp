@@ -3,6 +3,19 @@ import pandas as pd
 import numpy as np
 import time
 
+# CSS for gradient background
+gradient_css = """
+<style>
+    .stApp {
+        background: linear-gradient(45deg, #0207CB, #CB7C02);
+        background-attachment: fixed;
+    }
+</style>
+"""
+
+# Inject CSS
+st.markdown(gradient_css, unsafe_allow_html=True)
+
 
 # Slider
 x = st.slider("Select x value", 1, 10, 1)
