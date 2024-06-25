@@ -15,10 +15,10 @@ pg = st.navigation([home, page1, page2, page3, test])
 st.sidebar.header("Info")
 st.sidebar.write("Lorem ipsum dolor sit amet")
 
-linkedin = "https://raw.githubusercontent.com/amaldoror/DataVizApp/main/img/linkedin.gif"
-email = "https://raw.githubusercontent.com/amaldoror/DataVizApp/main/img/email.gif"
+linkedin = "https://raw.githubusercontent.com/amaldoror/datavizapp/master/img/linkedin.gif"
+email = "https://raw.githubusercontent.com/amaldoror/DataVizApp/master/img/email.gif"
 newsletter = (
-    "https://raw.githubusercontent.com/amaldoror/DataVizApp/main/img/letter.gif"
+    "https://raw.githubusercontent.com/amaldoror/DataVizApp/master/img/letter.gif"
 )
 
 uptime = "https://uptime.betterstack.com/status-badges/v1/monitor/196o6.svg"
