@@ -28,7 +28,7 @@ st.sidebar.caption(
         <div style='display: flex; align-items: center;'>
             <a href = 'https://www.linkedin.com/'>
             <img src='{linkedin}' style='width: 35px; height: 35px; margin-right: 25px;'></a>
-            <a href = 'mailto:sahir@adrian.morgenthal92@gmail.com'>
+            <a href = 'mailto:adrian.morgenthal92@gmail.com'>
             <img src='{email}' style='width: 28px; height: 28px; margin-right: 25px;'></a>
             <a href = 'https://www.linkedin.com/'>
             <img src='{newsletter}' style='width: 28px; height: 28px; margin-right: 25px;'></a>
