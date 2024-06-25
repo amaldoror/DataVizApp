@@ -9,3 +9,4 @@ if show_latex:
         \sum_{k=0}^{n-1} ax^k =
         a \left(\frac{1-x^{n}}{1-x}\right)
         ''')
+

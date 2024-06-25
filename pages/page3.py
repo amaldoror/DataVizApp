@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pypdf
+from components.particles import particles_js
 from components.MachineLearning import (preprocess_data,
                                         train_lr,
                                         train_dt,
@@ -8,10 +9,6 @@ from components.MachineLearning import (preprocess_data,
                                         train_svm,
                                         train_snn,
                                         print_model_info)
-
-
-def page3():
-    st.title("Chat")
 
 
 # ---------------------- File Uploader ----------------------
@@ -149,3 +146,4 @@ def select_model():
 model_choice = select_model()
 if uploaded_file is not None and isinstance(df, pd.DataFrame):
     model = train_model(model_choice, df)
+
